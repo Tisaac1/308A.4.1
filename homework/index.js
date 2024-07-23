@@ -87,7 +87,7 @@ async function BreedSelect(breedId) {
     <p><strong>Orgin:</strong> ${breed.origin}</p>
     <p><strong>Life Span:</strong> ${breed.life_span}years</p>
     `;
-      infoDump.innerHTNL = breedInfo;
+      infoDump.innerHTML = breedInfo;
     }
   } catch (error) {
     console.error("error fetching breed info:", error);
@@ -118,6 +118,7 @@ let response = await axios.get("https://api.thecatapi.com/v1/breeds/");
 const catBreeds = response.data;
 
 console.log(catbreed);
+
 
 // Create a progress bar to indicate the request is in progress.
 // The progressBar element has already been created for you.
@@ -180,14 +181,9 @@ function updateProgress(progressEvent) {
 
 export async function favourite(imgId) {
 try{
-    const response = await fetch(
-        'https://api.thecatapi.com/v1/favourites?limit=10&sub_id=user-123&order=DESC',{
-            headers:{
-                "content-type":"application/json",
-                'x-api-key': 'api_key=live_bjvUnTs5gyVIhhYlIxj0C6CcBT2nDCuxjSTWYnT6c3CMrTC0REwctFDxA3wEjg06'
-            
-            }
-        });
+    const response = await axios.get("https://api.thecatapi.com/v1/favourites")
+    const favourites = response.data;
+    
         ////https://api.thecatapi.com/v1/images/search?api_key=live_bjvUnTs5gyVIhhYlIxj0C6CcBT2nDCuxjSTWYnT6c3CMrTC0REwctFDxA3wEjg06%27
         const favouritesImage = response.data;
         console.log("Favorite images:", FavoriteImages);
@@ -205,5 +201,4 @@ try{
         return false;
     }
 }
-  }
-)}
+  

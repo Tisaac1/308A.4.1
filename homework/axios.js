@@ -57,7 +57,7 @@ async function BreedSelect(breedId) {
   const loadBreedSelectBreedId = breedSelect.value;
 
   try {
-    const response = await axious.get(
+    const response = await axios.get(
       "https://api.thecatapi.com/v1/images/search",
       {
         params: {
@@ -125,7 +125,7 @@ console.log(catbreed);
 // Add a console.log statement to indicate when requests begin.
 // As an added challenge, try to do this on your own without referencing the lesson material.
 
-axios.interceptors.request.use(request => {
+axios.interceptors.request.use((request) => {
     console.log("starting request", request);
     request.metadata = { startTime: new Date()};
     progressBar.style.width = "0%"
@@ -155,3 +155,31 @@ function updateProgress(progressEvent) {
    
     console.log(progressEvent.progress)
 }
+
+
+async function getFavourites() {
+    try {
+      const response = await axios.get(
+        "https://api.thecatapi.com/v1/favourites",
+        { headers }
+      );
+      const favoriteImages = response.data;
+      console.log("Favorite images:", favoriteImages);
+      carousel.clear();
+      favoriteImages.forEach((image) => {
+        const carouselItem = document.createElement("div");
+        carouselItem.classList.add("carousel-item");
+        const img = document.createElement("img");
+        img.src = image.image.url;
+        img.alt = image.image.breeds[0].name;
+        carouselItem.appendChild(img);
+        Carousel.addItem(carouselItem);
+      });
+    } catch (error) {
+      console.error("Error loading favorites:", error);
+    }
+  }
+
+getFavouritesBtn.addEventListener("click", getFavourites);
+
+initialLoad(); 
