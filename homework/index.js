@@ -1,4 +1,4 @@
-import * as Carousel from ".carousel.js";
+//import * as Carousel from ".carousel.js";
 import axios from "axios";
 
 // The breed selection input element.
@@ -20,10 +20,10 @@ const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 
 async function initialLoad() {
   try {
-    await fetch.get("https://api.thecatapi.com/v1/breeds");
-    const breed = await response.data;
+    await fetch ("https://api.thecatapi.com/v1/breeds");
+    const breed = await response.data();
 
-    console.log(breeds);
+    console.log(breed);
 
     breeds.forEach((breed) => {
       const option = document.createElement("option");
@@ -34,10 +34,12 @@ async function initialLoad() {
     });
   } catch (error) {
     console.error("Error fetching breeds:", error);
-    return [];
+
   }
 }
-console.log(breedSelect);
+
+initialLoad();
+// ;console.log(breedSelect);
 
 // Create an event handler for breedSelect that does the following:
 // Retrieve information on the selected breed from the cat API using fetch().
@@ -57,15 +59,7 @@ async function BreedSelect(breedId) {
   const loadBreedSelectBreedId = breedSelect.value;
 
   try {
-    const response = await axious.get(
-      "https://api.thecatapi.com/v1/images/search",
-      {
-        params: {
-          breed_ids: BreedSelectBreedId,
-          limit: 10,
-        },
-      }
-    );
+    const response = await axios.get("/images/search?breed_ids=${breedId}&limit=10")
 
     const images = response.data;
     const carousel = document.getElementById("carousel");
@@ -98,6 +92,7 @@ async function BreedSelect(breedId) {
   });
 }
 
+initialLoad();
 //Create an additional file to handle an alternative approach.
 axios
   .get("https//api.thecatapi.com/v1/breeds")
@@ -117,7 +112,7 @@ axios.defaults.headers.common["x-api-key"] =
 let response = await axios.get("https://api.thecatapi.com/v1/breeds/");
 const catBreeds = response.data;
 
-console.log(catbreed);
+console.log(catBreed);
 
 
 // Create a progress bar to indicate the request is in progress.
@@ -164,7 +159,7 @@ axios.interceptors.response.use(response => {
 });
 
 function updateProgress(progressEvent) {
-    progressBar.style.width = `${progressEvent.progress * 100}%`;
+    progressBar.style.width = `${progressEvent.progress * 100}%` / progressEvent.total;
    progressBar.style.width = `${percentCompleted}%`;
     // console.log(progressEvent.progress)
     axios.defaults.onDownloadProgress = updateProgress;
@@ -181,7 +176,7 @@ function updateProgress(progressEvent) {
 
 export async function favourite(imgId) {
 try{
-    const response = await axios.get("https://api.thecatapi.com/v1/favourites")
+    const response = await axios.post("https://api.thecatapi.com/v1/favourites")
     const favourites = response.data;
     
         ////https://api.thecatapi.com/v1/images/search?api_key=live_bjvUnTs5gyVIhhYlIxj0C6CcBT2nDCuxjSTWYnT6c3CMrTC0REwctFDxA3wEjg06%27
@@ -205,7 +200,7 @@ async function getFavourites(){
     try {
       const response = await axios.get(
         "https://api.thecatapi.com/v1/favourites",
-        { headers }
+        
       );
       const favoriteImages = response.data;
       console.log("Favorite images:", favoriteImages);
